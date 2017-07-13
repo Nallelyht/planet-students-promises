@@ -47,23 +47,25 @@ function getJSON(url){
 		}
 	})
 };
-/*var planetas;
+var planetas;
 fetch("data/earth-like-results.json")
-	.then(response => response.json())
-	.then((json)=> {
+	.then(function(response){
+	return response.json();
+})
+	.then(function(json) {
 	planetas=json;
 	return fetch(
 		planetas.results.map(getJSON));
 
-}).then((json)=>{
+}).then(function(resultados){
 
 	resultados.forEach(crearTarjeta);
 
 })
 	.catch(function(error){
 	console.log(error)
-});*/
-getJSON("data/earth-like-results.json") 
+});
+/*getJSON("data/earth-like-results.json") 
 	.then(function(response){
 	return Promise.all(
 		response.results.map(getJSON));
@@ -75,7 +77,7 @@ getJSON("data/earth-like-results.json")
 })
 	.catch(function(error){
 	console.log(error)
-});
+});*/
 
 
 
