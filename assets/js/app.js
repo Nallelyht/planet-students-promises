@@ -41,6 +41,8 @@ function getJSON(url){
 		ajax.onreadystatechange = function(){ 
 			if(ajax.readyState == 4){ 
 				resolve(JSON.parse(ajax.responseText)); 
+			} else{
+				reject("No hay planetas");
 			}
 		}
 	})
@@ -55,6 +57,9 @@ getJSON("data/earth-like-results.json")
 
 	resultados.forEach(crearTarjeta);
 
+})
+	.catch(function(error){
+	console.log(error)
 });
 
 
