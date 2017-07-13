@@ -1,16 +1,37 @@
-var plantilla = '<div class="row">' +
-		'<div class="col s12 m8 l6">' +
-		'<div class="card">' +
-		'<div class="card-content">' +
-		'<span class="card-title">__nombre__</span>' +
+var plantilla = '<div class="row">'+
+		'<div class="col s12 m7">'+
+		'<h2 class="header">__nombre__</h2>'+
+		'<div class="card horizontal">'+
+		'<div class="card-image">'+
+		'<img src="static/img/planets.jpg">'+
+		'</div>'+
+		'<div class="card-stacked">'+
+		'<div class="card-content">'+
 		'<p>__den__ density</p>' +
 		'<p>Discovered in __disc__ with __telescopio__</p>'+
-		'</div>' +
-		'</div>' +
-		'</div>' +
+		'</div>'+
+		'</div>'+
+		'</div>'+
+		'</div>'+
 		'</div>';
 
-var sequence = Promise.resolve();
+var plantillaFinal = " ";
+var crearTarjeta = function(resultado){
+	var nombre = resultado.pl_name;
+	var densidad = resultado.dec;
+	var descubrimiento = resultado.pl_disc;
+	var telescopio = resultado.pl_telescope;  
+
+
+	console.log(nombre,densidad,descubrimiento,telescopio);
+
+	plantillaFinal += plantilla.replace('__nombre__', nombre)
+		.replace('__den__', densidad).replace('__disc__', descubrimiento)
+		.replace('__telescopio__', telescopio);		
+
+	document.getElementById("cards-container").innerHTML = plantillaFinal;
+};
+
 
 function getJSON(url){
 	return new Promise(function(resolve,reject){
@@ -31,22 +52,12 @@ getJSON("data/earth-like-results.json")
 		response.results.map(getJSON));
 
 }).then(function(resultados){
-	var plantillaFinal = " ";
 
-	resultados.forEach(function(resultado){
-		var nombre = resultado.pl_name;
-		var densidad = resultado.dec;
-		var descubrimiento = resultado.pl_disc;
-		var telescopio = resultado.pl_telescope;  
+	resultados.forEach(crearTarjeta);
+
+});
 
 
-		console.log(nombre,densidad,descubrimiento,telescopio);
-
-		plantillaFinal += plantilla.replace('__nombre__', nombre).replace('__den__', densidad).replace('__disc__', descubrimiento).replace('__telescopio__', telescopio) ;		
-		document.getElementById("cards-container").innerHTML = plantillaFinal;
-	});
-
-})
 
 //  .then(function(mensaje){return(getJSON(mensaje.results[0]))}) 
 //  .then(function(resultado){console.log(resultado.pl_name)});
