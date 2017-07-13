@@ -47,7 +47,22 @@ function getJSON(url){
 		}
 	})
 };
+/*var planetas;
+fetch("data/earth-like-results.json")
+	.then(response => response.json())
+	.then((json)=> {
+	planetas=json;
+	return fetch(
+		planetas.results.map(getJSON));
 
+}).then((json)=>{
+
+	resultados.forEach(crearTarjeta);
+
+})
+	.catch(function(error){
+	console.log(error)
+});*/
 getJSON("data/earth-like-results.json") 
 	.then(function(response){
 	return Promise.all(
