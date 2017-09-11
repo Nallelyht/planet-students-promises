@@ -1,69 +1,76 @@
 var plantilla = '<div class="row">'+
-		'<div class="col s12 m7">'+
-		'<h2 class="header">__nombre__</h2>'+
-		'<div class="card horizontal">'+
-		'<div class="card-image">'+
-		'<img src="static/img/planets.jpg">'+
-		'</div>'+
-		'<div class="card-stacked">'+
-		'<div class="card-content">'+
-		'<p>__den__ density</p>' +
-		'<p>Discovered in __disc__ with __telescopio__</p>'+
-		'</div>'+
-		'</div>'+
-		'</div>'+
-		'</div>'+
-		'</div>';
+    '<div class="col s12 m7">'+
+    '<h2 class="header">__nombre__</h2>'+
+    '<div class="card horizontal">'+
+    '<div class="card-image">'+
+    '<img src="static/img/planets.jpg">'+
+    '</div>'+
+    '<div class="card-stacked">'+
+    '<div class="card-content">'+
+    '<p>__den__ density</p>' +
+    '<p>Discovered in __disc__ with __telescopio__</p>'+
+    '</div>'+
+    '</div>'+
+    '</div>'+
+    '</div>'+
+    '</div>';
 
 var plantillaFinal = " ";
 var crearTarjeta = function(resultado){
-	var nombre = resultado.pl_name;
-	var densidad = resultado.dec;
-	var descubrimiento = resultado.pl_disc;
-	var telescopio = resultado.pl_telescope;  
+
+  console.log(resultado)
+
+  fetch(resultado)
+    .then(function(response){
+    return(response.json());
+  })
+    .then(function(resultado){
+    console.log(resultado);
+    var nombre = resultado.pl_name;
+    var densidad = resultado.dec;
+    var descubrimiento = resultado.pl_disc;
+    var telescopio = resultado.pl_telescope;  
 
 
-	console.log(nombre,densidad,descubrimiento,telescopio);
+    console.log(nombre,densidad,descubrimiento,telescopio);
 
-	plantillaFinal += plantilla.replace('__nombre__', nombre)
-		.replace('__den__', densidad).replace('__disc__', descubrimiento)
-		.replace('__telescopio__', telescopio);		
+    plantillaFinal += plantilla.replace('__nombre__', nombre)
+      .replace('__den__', densidad).replace('__disc__', descubrimiento)
+      .replace('__telescopio__', telescopio);		
 
-	document.getElementById("cards-container").innerHTML = plantillaFinal;
+    document.getElementById("cards-container").innerHTML = plantillaFinal;
+  })
+
 };
 
 
 function getJSON(url){
-	return new Promise(function(resolve,reject){
-		var ajax = new XMLHttpRequest();  
-		ajax.open("GET", url); 
-		ajax.send(); 
-		ajax.onreadystatechange = function(){ 
-			if(ajax.readyState == 4){ 
-				resolve(JSON.parse(ajax.responseText)); 
-			} else{
-				reject("No hay planetas");
-			}
-		}
-	})
+  return new Promise(function(resolve,reject){
+    var ajax = new XMLHttpRequest();  
+    ajax.open("GET", url); 
+    ajax.send(); 
+    ajax.onreadystatechange = function(){ 
+      if(ajax.readyState == 4){ 
+        resolve(JSON.parse(ajax.responseText)); 
+      } else{
+        reject("No hay planetas");
+      }
+    }
+  })
 };
 var planetas;
 fetch("data/earth-like-results.json")
-	.then(function(response){
-	return response.json();
+  .then(function(response){
+  return(response.json());
 })
-	.then(function(json) {
-	planetas=json;
-	return fetch(
-		planetas.results.map(getJSON));
+  .then(function(resultados){
+  console.log(resultados.results)
 
-}).then(function(resultados){
-
-	resultados.forEach(crearTarjeta);
+  resultados.results.forEach(crearTarjeta);
 
 })
-	.catch(function(error){
-	console.log(error)
+  .catch(function(error){
+  console.log(error)
 });
 /*getJSON("data/earth-like-results.json") 
 	.then(function(response){
